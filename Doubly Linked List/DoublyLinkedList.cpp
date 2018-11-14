@@ -49,7 +49,6 @@ Node<T>::~Node() {}
 
 template <class T>
 class Double_LList {
-    private:
         int* ll_size;
         T* head;
         T* tails;
@@ -57,7 +56,7 @@ class Double_LList {
         Double_LList();
         void addFirst(T* node);
         void addLast(T* node);
-        void insertAt(T *node, int pos);
+        void insertAt(T* node, int pos);
         T* removeFirst();
         T* removeLast();
         T* removeAt(int pos);
@@ -83,17 +82,64 @@ Double_LList<T>::Double_LList() {
 
 template <class T>
 void Double_LList<T>::addFirst(T* node) {
+    node->next = NULL;
+    node->prev = NULL;
 
+    if (this->head == NULL) {
+        this->head = node;
+        this->tail = this->head;
+        this->ll_size++;
+    }
+    else {
+        this->head->prev = node;
+        node->next = this->head;
+        this->head = node;
+        this->ll_size++;
+    }
 }
 
 template <class T>
 void Double_LList<T>::addLast(T* node) {
+    node->next = NULL;
+    node->prev = NULL;
 
+    if (this->head == NULL) {
+        this->head = node;
+        this->tail = this->head;
+        this->ll_size++;
+    }
+    else {
+        this->tail->next = node;
+        node->prev = this->tail;
+        this->tail = node;
+        this->ll_size++;
+    }
 }
 
 template <class T>
 void Double_LList<T>::insertAt(T* node, int pos) {
+    node->next = NULL;
+    node->prev = NULL;
 
+    T* temp = this->head;
+
+    if (pos == 0) {
+        this->addFirst(node);
+    }
+    else if (pos == this->ll_size) {
+        this->addLast(node);
+    }
+    else if (pos > this->ll_size){
+        cout << "Err: Range out of bound." << endl;
+    }
+    else {
+        for (int i = 0; i <= pos; i++, temp = temp->next) {
+            node->prev = temp->prev;
+            node->next = temp;
+            temp->prev->next = node;
+            temp->prev = node;
+        }
+    }
 }
 
 template <class T>
@@ -150,6 +196,9 @@ template <class T>
 Double_LList<T>::~Double_LList() {}
 
 int main() {
+    Double_LList<Node<string>> list;
+
+    list.addLast(new Node<string>("something"));
     cout << "\ntrying something out" << endl;
 
     return 0;
