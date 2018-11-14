@@ -14,8 +14,8 @@ template <class T>
 class Node {
         T data;
     public:
-        Node *next;
-        Node *prev;
+        Node* next;
+        Node* prev;
 
         Node(T data);
         T getData();
@@ -50,17 +50,27 @@ Node<T>::~Node() {}
 template <class T>
 class Double_LList {
     private:
-        T *head;
-        T *tails;
-        int *ll_size;
+        int* ll_size;
+        T* head;
+        T* tails;
     public:
         Double_LList();
-        void add_head(T val);
-        void add_tail(int val);
-        void delete_head(int val);
-        void delete_tail(int val);
-        void search(int val);
+        void addFirst(T* node);
+        void addLast(T* node);
+        void insertAt(T *node, int pos);
+        T* removeFirst();
+        T* removeLast();
+        T* removeAt(int pos);
+        void interator();
+        bool exist(T* data);
         int size();
+
+        //LIFO ~ push: add to stack, pop: remove from stack
+        void push(T* node);
+        T* pop();
+        //FIFO ~ enqueue: add, dequeue: remove
+        void enqueue(T* node);
+        T* dequeue();
         ~Double_LList();
 };
 
@@ -72,30 +82,72 @@ Double_LList<T>::Double_LList() {
 }
 
 template <class T>
-void Double_LList<T>::add_head(T val) {
+void Double_LList<T>::addFirst(T* node) {
 
 }
 
 template <class T>
-void Double_LList<T>::add_tail(int val) {
+void Double_LList<T>::addLast(T* node) {
 
 }
 
 template <class T>
-void Double_LList<T>::delete_head(int val) {
+void Double_LList<T>::insertAt(T* node, int pos) {
 
 }
 
 template <class T>
-void Double_LList<T>::delete_tail(int val) {
+T* Double_LList<T>::removeFirst() {
+
+}
+
+template <class T>
+T* Double_LList<T>::removeLast() {
+
+}
+
+template <class T>
+T* Double_LList<T>::removeAt(int pos) {
+
+}
+
+template <class T>
+void Double_LList<T>::interator() {
+
+}
+
+template <class T>
+bool Double_LList<T>::exist(T* data) {
 
 }
 
 template <class T>
 int Double_LList<T>::size() {
-
+    return this->ll_size;
 }
 
+template <class T>
+void Double_LList<T>::push(T* node) {
+    this->addLast(node);
+}
+
+template <class T>
+T* Double_LList<T>::pop() {
+    return this->removeLast();
+}
+
+template <class T>
+void Double_LList<T>::enqueue(T* node) {
+    this->addLast(node);
+}
+
+template <class T>
+T* Double_LList<T>::dequeue() {
+    return this->removeFirst();
+}
+
+template <class T>
+Double_LList<T>::~Double_LList() {}
 
 int main() {
     cout << "\ntrying something out" << endl;
