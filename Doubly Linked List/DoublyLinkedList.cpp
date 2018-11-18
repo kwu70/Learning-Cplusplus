@@ -155,6 +155,10 @@ T* Double_LList<T>::removeFirst() {
     T* data;
     int size = this->ll_size;
 
+    if (this->head == NULL) {
+        return NULL;
+    }
+
     if (size == 0) {
         return NULL;
     }
@@ -177,6 +181,10 @@ template <class T>
 T* Double_LList<T>::removeLast() {
     T* data;
     int size = this->ll_size;
+
+    if (this->tail == NULL) {
+        return NULL;
+    }
 
     if (size == 0) {
         return NULL;
@@ -210,6 +218,7 @@ T* Double_LList<T>::removeAt(int pos) {
     }
     else if ((pos > size) || (pos < 0)){
         cout << "Err: Range out of bound. Failed to remove index: " << pos << endl;
+        //issue here, passing in NULL will cause issue with toString()
         data = NULL;
     }
     else {
