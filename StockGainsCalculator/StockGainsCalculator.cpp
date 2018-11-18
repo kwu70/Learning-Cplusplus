@@ -40,8 +40,15 @@ int main() {
         }*/
 
         if ((sum > 9000) && (sum < 25000) && (untraded < 25000)) {
-            untraded += 2000;
-            sum -= 2000;
+            double temp = 0.0;
+            if (sum > 12000) {
+                untraded += (sum-9000);
+                sum = 9000;
+            }
+            else {
+                untraded += 2000;
+                sum -= 2000;
+            }
         }
         else if ((sum > 50000) && (sum < 60000)) {
             untraded += 10000;

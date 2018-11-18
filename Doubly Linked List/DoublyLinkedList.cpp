@@ -1,5 +1,6 @@
 #include <iostream>
 #include <sstream>
+
 using namespace std;
 
 /*
@@ -36,22 +37,25 @@ T Node<T>::getData() {
 
 template <class T>
 string Node<T>::toString() {
-    Stringstream s;
+    stringstream s;
     s << this->getData();
     return s.str();
 }
 
 //destructor, free up memory for contructor after program ends
 template <class T>
-Node<T>::~Node() {}
+Node<T>::~Node() {
+    delete this->next;
+    delete this->prev;
+}
 
 /* ----------------------------------------------------- */
 
 template <class T>
 class Double_LList {
-        int* ll_size;
+        int ll_size;
         T* head;
-        T* tails;
+        T* tail;
     public:
         Double_LList();
         void addFirst(T* node);
@@ -64,6 +68,8 @@ class Double_LList {
         void printAll();
         int size();
 
+        T* peekStack();
+        T* peekQueue();
         //LIFO ~ push: add to stack, pop: remove from stack
         void push(T* node);
         T* pop();
@@ -75,7 +81,7 @@ class Double_LList {
 
 template <class T>
 Double_LList<T>::Double_LList() {
-    this->head = NULL:
+    this->head = NULL;
     this->tail = NULL;
     this->ll_size = 0;
 }
@@ -120,17 +126,17 @@ template <class T>
 void Double_LList<T>::insertAt(T* node, int pos) {
     node->next = NULL;
     node->prev = NULL;
-
+    int size = this->ll_size;
     T* temp = this->head;
 
     if (pos == 0) {
         this->addFirst(node);
     }
-    else if (pos == this->ll_size) {
+    else if (pos == size) {
         this->addLast(node);
     }
-    else if (pos > this->ll_size){
-        cout << "Err: Range out of bound." << endl;
+    else if ((pos > size) || (pos < 0)){
+        cout << "Err: Range out of bound. Failed to add: " << node->toString() << endl;
     }
     else {
         for (int i = 0; i < pos; i++) {
@@ -140,24 +146,26 @@ void Double_LList<T>::insertAt(T* node, int pos) {
         node->next = temp;
         temp->prev->next = node;
         temp->prev = node;
+        this->ll_size++;
     }
 }
 
 template <class T>
 T* Double_LList<T>::removeFirst() {
     T* data;
+    int size = this->ll_size;
 
-    if (this->ll_size == 0) {
+    if (size == 0) {
         return NULL;
     }
-    else if (this->ll_size == 1) {
-        data = this->head->getData();
+    else if (size == 1) {
+        data = this->head;
         this->head = NULL;
         this->tail = NULL;
         this->ll_size = 0;
     }
     else {
-        data = this->head->getData();
+        data = this->head;
         this->head->next->prev = NULL;
         this->head = this->head->next;
         this->ll_size--;
@@ -168,18 +176,19 @@ T* Double_LList<T>::removeFirst() {
 template <class T>
 T* Double_LList<T>::removeLast() {
     T* data;
+    int size = this->ll_size;
 
-    if (this->ll_size == 0) {
+    if (size == 0) {
         return NULL;
     }
-    else if (this->ll_size == 1) {
-        data = this->tail->getData();
+    else if (size == 1) {
+        data = this->tail;
         this->head = NULL;
         this->tail = NULL;
         this->ll_size = 0;
     }
     else {
-        data = this->tail->getData();
+        data = this->tail;
         this->tail->prev->next = NULL;
         this->tail = this->tail->prev;
         this->ll_size--;
@@ -189,24 +198,25 @@ T* Double_LList<T>::removeLast() {
 
 template <class T>
 T* Double_LList<T>::removeAt(int pos) {
+    int size = this->ll_size;    
     T* temp = this->head;
     T* data;
 
     if (pos == 0) {
         data = this->removeFirst();
     }
-    else if (pos == this->ll_size) {
+    else if (pos == size-1) {
         data = this->removeLast();
     }
-    else if (pos > this->ll_size){
-        cout << "Err: Range out of bound." << endl;
-        return NULL;
+    else if ((pos > size) || (pos < 0)){
+        cout << "Err: Range out of bound. Failed to remove index: " << pos << endl;
+        data = NULL;
     }
     else {
         for (int i = 0; i < pos; i++) {
             temp = temp->next;
         }
-        data = temp->getData();
+        data = temp;
         temp->prev->next = temp->next;
         temp->next->prev = temp->prev;
         this->ll_size--;
@@ -217,21 +227,26 @@ T* Double_LList<T>::removeAt(int pos) {
 template <class T>
 bool Double_LList<T>::exist(T* data) {
     T* temp = this->head;
-    for (int i = 0; i < this->ll_size; i++) {
-        if (temp->getData() == data) {
+    int size = this->ll_size;
+    bool state = false;
+
+    for (int i = 0; i < size; i++) {
+        if (temp->getData() == data->getData()) {
+            state =  true;
             break;
-            return true;
         }
         temp = temp->next;
     }
-    return false;
+    return state;
 }
 
 template <class T>
 void Double_LList<T>::printAll() {
     T* temp = this->head;
-    for (int i = 0; i < this->ll_size; i++) {
-        cout << temp->getData() << endl;
+    int size = this->ll_size;
+
+    for (int i = 0; i < size; i++) {
+        cout << temp->toString() << endl;
         temp = temp->next;
     }
 }
@@ -240,6 +255,18 @@ template <class T>
 int Double_LList<T>::size() {
     return this->ll_size;
 }
+
+/* peek return the current head node */
+template <class T>
+T* Double_LList<T>::peekStack() {
+    return this->tail;
+}
+
+template <class T>
+T* Double_LList<T>::peekQueue() {
+    return this->head;
+}
+/* --------------------------------- */
 
 template <class T>
 void Double_LList<T>::push(T* node) {
@@ -262,13 +289,13 @@ T* Double_LList<T>::dequeue() {
 }
 
 template <class T>
-Double_LList<T>::~Double_LList() {}
+Double_LList<T>::~Double_LList() {
+    T* temp = this->head;
+    while (this->head) {
+        temp = temp->next;
+        delete this->head;
+        this->head = temp;
+    }
 
-int main() {
-    Double_LList<Node<string>> list;
-
-    list.addLast(new Node<string>("something"));
-    cout << "\ntrying something out" << endl;
-
-    return 0;
+    this->ll_size = 0;
 }
