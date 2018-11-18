@@ -63,7 +63,7 @@ int main() {
             untraded = 0.0;
         }
 
-        //sum -= 8; $8 a day on food
+        sum -= 2; //$2 trading fees
         prev = sum;
         gains = sum * percent;
         sum += gains;
