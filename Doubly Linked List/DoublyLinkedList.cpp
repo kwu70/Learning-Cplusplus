@@ -3,6 +3,12 @@
 
 using namespace std;
 
+struct IndexOutOfBoundException : public exception {
+    virtual const char* what() const throw() {
+        return "Exception! Index out of bound!";
+    }
+};
+
 /*
 template <class T>
 struct Node {
@@ -136,7 +142,8 @@ void Double_LList<T>::insertAt(T* node, int pos) {
         this->addLast(node);
     }
     else if ((pos > size) || (pos < 0)){
-        cout << "Err: Range out of bound. Failed to add: " << node->toString() << endl;
+        //cout << "Err: Range out of bound. Failed to add: " << node->toString() << endl;
+        throw IndexOutOfBoundException();
     }
     else {
         for (int i = 0; i < pos; i++) {
@@ -156,7 +163,7 @@ T* Double_LList<T>::removeFirst() {
     int size = this->ll_size;
 
     if (this->head == NULL) {
-        return NULL;
+        throw IndexOutOfBoundException();
     }
 
     if (size == 0) {
@@ -183,7 +190,7 @@ T* Double_LList<T>::removeLast() {
     int size = this->ll_size;
 
     if (this->tail == NULL) {
-        return NULL;
+        throw IndexOutOfBoundException();
     }
 
     if (size == 0) {
@@ -217,9 +224,10 @@ T* Double_LList<T>::removeAt(int pos) {
         data = this->removeLast();
     }
     else if ((pos > size) || (pos < 0)){
-        cout << "Err: Range out of bound. Failed to remove index: " << pos << endl;
+        //cout << "Err: Range out of bound. Failed to remove index: " << pos << endl;
         //issue here, passing in NULL will cause issue with toString()
-        data = NULL;
+        //data = NULL;
+        throw IndexOutOfBoundException();
     }
     else {
         for (int i = 0; i < pos; i++) {

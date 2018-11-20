@@ -73,8 +73,8 @@ int main() {
     numList.insertAt(new Node<int>(7), 0);
     numList.insertAt(new Node<int>(8), 2);
     numList.insertAt(new Node<int>(9), 5);
-    //testing if adding fails
-    numList.insertAt(new Node<int>(10), 10);
+    // ************************** issue adding at out of bound index
+    //numList.insertAt(new Node<int>(10), 10);
     cout << endl;
     numList.printAll();
     cout << "Current size: " << numList.size() << endl;
