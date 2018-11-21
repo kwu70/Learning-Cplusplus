@@ -57,7 +57,8 @@ int main() {
     string num;
     string zero;
 
-    #if NUM_OF_FILES > 100
+    //test case files only go up to 100 files
+    #if NUM_OF_FILES > 101
     #undef NUM_OF_FILES
     #define NUM_OF_FILES 1
     #endif
@@ -65,10 +66,15 @@ int main() {
     if (NUM_OF_FILES < 10) {
         zero = "00";
     }
-    else {
+    else if (NUM_OF_FILES > 9) {
         zero = "0";
     }
+    else {
+        zero = "";
+    }
 
+    //note: tried stringstream to convert int to str, but it concat every loop.
+    //stringstream s; s << n; s.str();
     for (int n = 1; n <= NUM_OF_FILES; n++) {
         num = to_string(n);
         cout << "\nFile: " << (zero+num+".txt") << endl; 
